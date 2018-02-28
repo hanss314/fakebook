@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<title>Fakebook</title>
+<meta name="description" content="Fakebook Fakebook - create a fictional social profile at www.classtools.net">
+<meta name="keywords" content="fakebook,fake,profile,classtools,Fakebook">
+<meta charset="utf-8">
+
+<style>
+.share-button { margin: auto; position: absolute; top: 0; left: 0; bottom: 0; right: 0; z-index: 100; }
+
+</style>
+
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src="https://www.classtools.net/_FAKEBOOK/scripts/jquery.autosize.js"></script>
+</head>
+
+
+<body onload="init();firstLoad()" onbeforeunload="unloading()" style="">
+<div id="modal" class="modal" style="display: none;">
+<h1 align="center" style="font-family:Verdana, Geneva, sans-serif">Fakebook Loading: Please Wait...</h1>
+
+</div>
+<style>
+/* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   speak for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+.modal {
+	zoom:1;
+    display:    block;
+    position:   fixed;
+    z-index:    9999999;
+    top:        0px;
+    left:       0px;
+    height:     100%;
+    width:      100%;
+	/*filter: alpha(opacity=50);*/
+	/*opacity: 0.5;*/
+    background: grey
+                url('../../_FAKEBOOK/uploadImage/images/spinner.gif') 
+                50% 50% 
+                no-repeat;
+}
+</style>
+
+<div id="container" style="padding-right: 0px;">
+  <div id="header" data-intro="You can click here to add a wallpaper image" data-position="right" class="">
+	
+            <img data-intro="Welcome to Fakebook!" data-position="top" id="profileImg" src="assets/monet.jpg" class="" >
+            <span id="profileName" data-intro="Start by adding a name here" data-position="top" class="">
+            <a href="javascript:addNameBox()"><span id="profileNmText" style="color:white">Claude Monet</span></a>
+            <input style="font-size:x-large;display:none" type="text" name="editProfileName" id="editProfileName">
+          
+            </span>
+            
+            <span style="position:relative;top:-170px;width:850px;float:right;overflow:hidden;background:#3C5A9A">
+            <img style="float:right;z-index:-1;margin:0;height:313px;width:100%" id="wallpaperBtn" src="assets/cover.jpg" >
+    		</span>
+         
+    </div>
+    
+    	
+    </div>
+    
+
+<div id="leftWrapper">
+
+<div id="aboutBox" data-intro="Add some profile information here" data-position="top" class="">
+    	<div class="leftBox">
+        <div class="aboutTitle">About</div>
+        <span id="aboutBoxText" style="clear: both; padding-top: 10px; font-size: small; display: inline;">
+		<img height="10px" src="assets/circle.gif">Born: November 14, 1840<hr>
+		<img height="10px" src="assets/circle.gif">Family: <br> 
+		Louise Justine Aubrée Monet <br> &nbsp;&nbsp;&nbsp;&nbsp;
+		Claude Adolphe Monet <br> &nbsp;&nbsp;&nbsp;&nbsp;
+		Alice Hoschedé <br> &nbsp;&nbsp;&nbsp;&nbsp;
+		Leon Pascal Monet <br> &nbsp;&nbsp;&nbsp;&nbsp;
+		Jean Monet <br>
+	</span>
+        </div>
+    </div>
+	
+     <br>
+
+    <div id="blocks" class="ui-sortable">
+               <div class="leftBox" data-intro="You can add blocks (e.g. 'friends', 'enemies', 'family') here" data-position="bottom">
+               <img src="fbpics/delete.gif" class="deleteCross" id="cross">
+                        <div class="leftBoxTitle">Friends</div><br>
+
+                        <span class="leftBoxElement"><img class="leftImg" src="assets/manet.jpeg">
+				<span class="leftBoxText">Édouard Manet</span>
+			</span>
+
+                        <span class="leftBoxElement"><img class="leftImg" src="assets/bazille.jpg" style="width:100%">
+				<span class="leftBoxText">Frédéric Bazille</span>
+			</span>
+
+			<span class="leftBoxElement"><img class="leftImg" src="assets/renoir.jpg" style="width:100%">
+				<span class="leftBoxText">Pierre-Auguste Renoir</span>
+			</span>
+
+                        <span class="leftBoxElement"><img class="leftImg" src="assets/sisley.jpg" style="width:100%">
+				<span class="leftBoxText">Alfred Sisley</span>
+			</span>
+
+                        <span class="leftBoxElement"><img class="leftImg" src="assets/pissaro.jpg">
+				<span class="leftBoxText">Camille Pissarro</span>
+			</span>
+	</div>
+    </div>           
+</div>
+
+<script>
+blockHTML=$("#blocks").html();
+function attachNewBlock()
+{
+$("#blocks").prepend(blockHTML);
+init();
+}
+
+
+</script>
+    
+       
+                      <div id="mainArea" data-intro="You can start adding posts here" data-position="top" class="">
+                      
+               
+                      	<span id="addPostWrapper">
+                            <div id="postStatusHeader">
+                            <p><b>Add a post!</b>
+                            <br><span style="font-size:11px;color:grey"> 
+                            (TIP 1: You can add hyperlinks and links to YouTube/Vimeo videos too!)
+                            <br>(TIP 2: You can click on any image that appears to change it!)
+                            </span>
+                            </p>
+                              <p>
+                                Name
+                                <input name="posterName" type="text" id="posterName" value="Name....">
+                              Date
+                                <input name="posterDate" type="text" id="posterDate" value="earlier today....">
+                              </p>
+                            </div>
+                                <div id="postStatusBox">
+                                <textarea class="animated" name="postBox" id="postBox" style="overflow: hidden; word-wrap: break-word; resize: none; height: 32px;">Write something....</textarea>
+                                </div>
+                                
+                            <div id="postStatusFooter">
+                                <input type="button" class="blueBtn" name="but" id="but" value="Post" onclick="addPost(1,0)">
+                                <img id="postPic" class="postPic cameraIcon" src="fbpics/camera.png">
+                                <input style="display:none" type="button" class="blueBtn" name="rmv" id="rmv" value="Remove" onclick="$('#postPic').attr('src', 'fbpics/camera.png');$(this).hide()">
+                            </div>
+                         </span>
+                            
+                            <div id="sortable" class="ui-sortable">
+                            <p>&nbsp;</p>
+                            
+                            <span align="center" id="advert4" style="margin-left:20px">
+                            <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                            <!-- Fakebook Horizontal -->
+                            <ins class="adsbygoogle" style="display:inline-block;width:468px;height:60px;" data-ad-client="ca-pub-8912794096382956" data-ad-slot="8193936867" data-adsbygoogle-status="done"><ins id="aswift_2_expand" style="display:inline-table;border:none;height:60px;margin:0;padding:0;position:relative;visibility:visible;width:468px;background-color:transparent;"><ins id="aswift_2_anchor" style="display:block;border:none;height:60px;margin:0;padding:0;position:relative;visibility:visible;width:468px;background-color:transparent;"><iframe width="468" height="60" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_2" name="aswift_2" style="left:0;position:absolute;top:0;width:468px;height:60px;"></iframe></ins></ins></ins>
+                            <script>
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                            </script>
+                            </span>
+                            
+                             <p>&nbsp;</p>
+                            
+                            </div> 
+                            
+                            
+                            <!-- INTRO -->                    
+<div id="introBlurb" style="">
+<h3 align="center">"Fakebook" allows teachers and students to create imaginary profile pages  for study purposes.</h3>
+
+                <div align="center">
+                
+                <iframe id="videoIntro" width="398" height="299" frameborder="0" src="https://player.vimeo.com/video/25366185?autoplay=0"></iframe>
+                
+                </div>
+                
+                <p align="center">Use "Fakebook" to chart the plot of a book, the development of a character, a series of historical events, the debates and relationships between people, and so on!</p>
+                
+                <p align="center">Get started by entering a name at the top of the page. Then proceed to add friends, posts, comments and profile information.</p>
+                <p align="center">You can save your work and edit it again later.</p>
+</div>
+   <!-- INTRO -->  
+                            
+                        </div>
+                        
+<div id="fixedRight" style="display: none;">
+fixedRight
+</div>
+<!-- <form method="post" name="reloadForm" id="reloadForm" action="https://www.classtools.net/FB/< ? echo($folder); ?>-< ? echo($subfolder); ?>"> -->
+<form method="post" name="reloadForm" id="reloadForm" action="https://www.classtools.net/_FAKEBOOK/savedLink.php">
+<input type="hidden" id="pwBox" name="pwBox" value="">
+<input type="hidden" id="savedURL" name="savedURL" value="https://www.classtools.net/FB/-">
+
+</form>
+<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
+
+
+<script>
+alreadyUsedPics=new Array();
+function firstLoad()
+{
+str="";
+
+
+
+$("#videoIntro").attr('src',"https://player.vimeo.com/video/25366185?autoplay=0" )
+
+if(templateType!="locked")
+	{
+	$('#saveBtnBanner').show()	
+	}
+
+if(templateType=="fresh")
+	{
+	$("#introBlurb").show()
+	$('body').chardinJs('start');
+	$('body').click(function(){$('body').chardinJs('stop')})
+	}
+//if(templateType=="fresh"){apprise("<h1 align='center'>Welcome to the new Fakebook!</h1><br>Get started by inputting a name, adding some information in the 'about' box, and adding some posts!");}
+	
+	if(templateType=="locked")//lock down the screen until we know it's loaded up / unlocked.
+	{
+	$("#addPostWrapper").hide();
+		$("#blockDiv").click(function(e) {
+			askPW();
+			return false;
+		});
+	}
+
+loadData();//load it up!
+
+
+addAbout()
+
+if(templateType!="locked")//and now remove blocks on editing if it's not a locked template.
+		{$("#blockDiv").remove()}
+
+	$("#blocks").sortable({axis: 'y',containment:"#blocks"});
+	$(document).on('click', '#aboutBox', function() 
+		{
+		if(textBoxOpen!=""){eval(textBoxOpen)}
+		textBoxOpen="addAbout()";
+		$("#aboutBoxTextArea").show()
+		$("#aboutBoxText").hide()
+		});
+		$('#aboutBoxTextArea').blur(function(){
+			addAbout()
+			});
+
+$(document).on('click', '#aboutBoxTextArea', function(e) {e.stopPropagation();});//stop clicks in textbox firing the aboutarea re-opening it again
+	
+	//SIDEBOX FUNCTIONS
+			$(document).on('click', '.leftBoxText, .leftBoxTitle', function() {
+			
+			if($('#editSideBoxText').length)//if another sidebox is already open (not this one) then process it.
+				{
+				if(!$("#editSideBoxText").is(":hover")){$('#editSideBoxText').blur()}
+				}
+
+				tit=$(this).attr('class');
+				if(textBoxOpen!=""){eval(textBoxOpen)}
+				temp=$(this).text()
+				childEl=$(this)
+				var parentEl = $(this).closest('.leftBoxElement');
+				i="<input style='font-size:x-small;width:94px;padding:0px;' type='text' name='editSideBoxText' id='editSideBoxText' value=''>"
+				$(this).html(i);
+				$("#editSideBoxText").val(temp);
+				$("#editSideBoxText").focus();
+				if(temp=="type here"){$("#editSideBoxText").select();}
+				$('#editSideBoxText').pressEnter(function()
+					{
+					$(this).blur()
+					});
+				$('#editSideBoxText').blur(function(){
+					if($("#editSideBoxText").val()==""){$("#editSideBoxText").val("type here")}
+					if(tit!="leftBoxTitle"){addBoxPic(childEl,parentEl)}
+					else{n=$("#editSideBoxText").val();$(childEl).html(n)}
+					});
+				return;
+				});
+				$(document).on("click", ".deleteCross", function() {
+					if(confirm("Are you sure you want to delete this block?")){$(this).parent().fadeOut(500, function(){ $(this).remove();})}
+					
+				});
+	
+	$('.normal').autosize();
+		$('.animated').autosize({append: "\n"});
+	$('#profileNmText').on('click', function() {addNameBox()});
+	//$('#editProfileName').on('blur', function() {changeName()});
+	
+	
+	
+	$('body').on('click', 'a', function() {$('textarea').blur()});
+	
+	//IMAGE CLICKED.
+	$('body').on('click', 'img', function() {
+		if(templateType=="fresh")
+			{apprise("After creating a few posts and saving your template, you will be able to upload pictures directly from your computer by clicking on them.");return}////RJT DISABLED FOR THE MOMENT
+		
+		if(!this.id.length)
+			{
+			$(this).attr('id','tempID'+Math.floor(Math.random()*5000));//give this pic a unique id dynamically.
+			}
+			var id = $(this).attr('id');
+			flag=0
+			a="tempID*wallpaperBtn*comImg*postImg*profileImg*postPic*editpostPic*attachCommentPic*editCommentPic";
+			a=a.split("*");
+			for(n=0;n<a.length;n++)
+				{
+				if(id.indexOf(a[n])!=-1)
+					{
+					flag=1;nm="";//Get the associated name for this image.
+					if(a[n]=="postImg"){nm=$("#"+id).siblings("span.pName:first").html();}
+					if(a[n]=="comImg"){nm=$("#"+id).siblings("span.comName:first").html();}
+					if(a[n]=="profileImg"){nm=$("#profileNmText").text();}
+					if(a[n]=="tempID"){nm=$("#"+id).siblings("span.leftBoxText:first").html();}//leftBoxText
+					}
+				}
+			if(flag==1)
+				{
+				h=160;w=160;
+				if(id.indexOf("CommentPic")!=-1 || id.indexOf("postPic")!=-1)
+					{h=300;w=550;}
+				if(id=="wallpaperBtn")
+					{h=315;w=850;}
+				$('.appriseOverlay').remove();$('.appriseOuter').remove()//IE bug means block isn't working.
+				apprise
+					("<iframe id='uploadWindow' name='uploadWindow' width='"+(w+150)+"px' height='"+(h+90)+"px' frameBorder='0' src='../_FAKEBOOK/uploadImage/index.php?folder="+folder+"&subfolder="+subfolder+"&h="+h+"&w="+w+"'></iframe>",
+					{'confirm' : true},
+					function (e)
+						{
+						if(e){
+							if(imgURL=="NONE"){apprise("No image selected");return}
+							addToPicsDatabase(nm,imgURL)
+							imgURL="fbsaved/"+imgURL;
+							//alert(imgURL);
+							if(nm!="")
+								{
+								if((nm in alreadyUsedPics))//If this picture is being changed, change in all posts now.
+									{
+									imgToReplace=alreadyUsedPics[nm]
+									temp=$("#container").html();
+									temp=temp.split(alreadyUsedPics[nm]);
+									temp=temp.join(imgURL)
+									$("#container").html(temp)
+									init()
+									}
+								alreadyUsedPics[nm]=imgURL;
+								loadTags()
+								}//save the image in an array so it will be spotted next time this name is used.
+							$('#'+id).attr('src', imgURL+"?id="+Math.random());
+							if(id=="postPic"){$('#rmv').show()}//show the 'remove' button for the post image.
+							if(id.indexOf("editpostPic")!=-1){$('#rmvBtn').show()}//show the 'remove' button for the edited post image.
+							if(id.indexOf("CommentPic")!=-1){$('#rmvBtn').show()}//show the 'remove' button for the edited post image.
+							}
+						}
+					)
+				}
+			});
+}
+
+function addToPicsDatabase(uploadedNm,uploadImg)//Uploads a user-uploaded pic to the database (i.e. crowdsource). Disable if it starts clogging server.
+{
+//return;//RJT DISABLED
+uploadedNm=uploadedNm.replace(/^\s+|\s+$/gm,'');
+if(uploadedNm.indexOf(" ")==-1){return}
+if(uploadedNm.indexOf("'")!=-1){return}
+if(uploadedNm.indexOf("<")!=-1){return}
+console.log(1)
+	
+temp=uploadedNm.split(" ");
+if(temp.length!=2){return}//only go for names which are two words.
+
+uploadNm=uploadedNm.toLowerCase();
+uploadNm=uploadNm.replace(/[^a-zA-Z 0-9]+/g,'');
+uploadNm=uploadNm.split(" ");uploadNm=uploadNm.join("_");
+$.ajax({ url: "../../_FAKEBOOK/_getPic/uploaded.php",
+			 data: {parsedName: uploadNm, uploadImg: uploadImg, rlNm: uploadedNm},
+			 type: 'get',
+			 cache: false,
+			 async: false
+		});	
+}
+
+
+
+
+
+function addAbout(){
+		textBoxOpen=""
+		n=$("#aboutBoxTextArea").val();
+		//alert("5 - "+n)
+		n=n.replace(/\n/g,"<hr><img height='10px' src='fbpics/circle.gif' />")
+		//alert("5 ok")
+		$("#aboutBoxTextArea").hide()
+		$("#aboutBoxText").show()
+		$("#aboutBoxText").html("<img height='10px' src='fbpics/circle.gif' />"+n)
+		}
+		
+
+function addBoxPic(childEl,parentEl){
+				n=$("#editSideBoxText").val();
+				if(n!="type here"){getPic(n);$("img",parentEl).attr("src",currentImg);}
+				$(childEl).html(n)
+				}
+
+		
+function unloading()
+{
+//clear out the temp images if page being left without a save.
+//NO LONGER NEEDED: Because the folders are only created now AFTER a save anyway, and users cannot upload images until after a save.
+return;
+/*
+if(templateType=="fresh")
+	{
+		$.ajax({ url: "../../_FAKEBOOK/delete-temp-images.php",
+			 data: {folder: folder, subfolder: subfolder},
+			 type: 'get',
+			 cache: false,
+			 async: false
+		});
+	}
+*/
+}
+
+//Remove breaks from comments when enter is pressed for submit.
+function removeBRs(temp){
+	//alert("6 - "+temp)
+	temp=temp.replace(/\<br\>/g, "\n");
+    temp=temp.replace(/\<br \/\>/g, "\n");
+	temp=temp.replace(/\<BR\>/g, "\n");
+    temp=temp.replace(/\<BR \/\>/g, "\n");
+	//alert("6 ok")
+	return temp
+}
+
+
+//Display the sidebar if the screen is wide enough.
+$(window).resize(function() {
+	if($(window).width()<1375)
+		{
+		$("#fixedRight").hide(); 
+		$("#container").css("padding-right","0px"); 
+		if (typeof window.console !== 'undefined') {console.log($(window).width())}
+		}
+	if($(window).width()>=1375)
+		{
+		$("#fixedRight").show(); 	
+		$("#container").css("padding-right","205px"); 
+		}
+}).resize();
+
+//Detect enter being pressed.
+$.fn.pressEnter = function(fn) {  
+    return this.each(function() {  
+        $(this).bind('enterPress', fn);
+        $(this).keyup(function(e){
+            if(e.keyCode == 13)
+            {
+              $(this).trigger("enterPress");
+            }
+        })
+    });  
+ }; 
+
+//Remove attached image and replace with camera.
+function rmvit(n){
+	$("#"+n).attr('src', "fbpics/camera.png");
+	$("#rmvBtn").hide()
+}
+
+/////////////////////////
+//Picture Functions
+function getPic(aname)
+{
+aname=$.trim(aname);
+//Block screen (for IE as ajaxstart doesn't work in IE).
+searchName=aname;
+if((searchName in alreadyUsedPics))
+	{currentImg=alreadyUsedPics[searchName];return}
+aname=aname.toLowerCase();
+//alert("7 - "+aname);
+aname=aname.replace(/[^a-zA-Z 0-9]+/g,'');
+aname=aname.split(" ");aname=aname.join("_");
+$.ajax({ url: "../../_FAKEBOOK/_getPic/index.php",
+			 data: {searchName: searchName, parsedName: aname},
+			 type: 'get',cache: false, dataType: 'json', async:false,
+			 success: function(data) 
+					{
+					if(data.results=="BAD_IMAGE"){currentImg="fbimages/silhouette.jpg"	}
+					else{currentImg="fbimages/"+aname.charAt(0)+"/"+data.results;}
+					alreadyUsedPics[searchName]=currentImg;
+					loadTags()
+					},
+			error: function(x, t, m) 
+					{
+					$("#modal").hide();//Block screen.
+            		apprise("Error Report - "+t);
+					currentImg="fbimages/silhouette.jpg"	
+					}
+		});
+}
+
+
+function freshPostBox(){
+	$("#postBox").val("Write something....");
+	$("#posterDate").val("earlier today....");
+	$("#posterName").val("Name....");
+	$("#posterName").select()
+	$('#postPic').attr('src', "fbpics/camera.png");
+	$('#rmv').hide()
+}
+
+function init() {
+	$("#modal").hide();
+	$("#sortable").sortable({containment:"#sortable"});//Apply sortable function to the main posts.
+ 	$('textarea').autosize(); 
+	$('input, textarea').on('focus', function(e) {if($(this).val().indexOf("....")!=-1){$(this).val('')}});
+	if(templateType=="unlocked"){$("#delBtn").show()}
+	}
+	
+	
+function addLinks(str){
+	if (str.indexOf(" www.")!=-1){str=str.split(" www.");str=str.join(" https://www.")}
+	
+	//VIDEO
+	ytflag=0;vimFlag=0
+	if(str.indexOf("https://www.youtube.com/")!=-1){
+			ytflag=1
+			ytStem=str.split("https://www.youtube.com/")
+			}
+	if(str.indexOf("https://www.youtube.com/")!=-1){
+			ytflag=1
+			ytStem=str.split("https://www.youtube.com/")
+			}
+	if(str.indexOf("https://youtu.be/")!=-1){
+			ytflag=1
+			ytStem=str.split("https://youtu.be/")
+			}
+	if(ytflag==1){
+			ytStem2=ytStem[1].split(" ")
+			//alert(ytStem2[0])
+			if(ytStem2[0].indexOf("?")==-1){vidId=ytStem2[0]}
+			else{vidId=getYouTubeParameter("https://www.youtube.com/"+ytStem2[0], 'v')}
+			//alert(vidId)
+			ytStem2.splice(0,1);ytStem2=ytStem2.join(" ");
+			str=ytStem[0]+ytStem2
+			str+='<iframe id="hztp://www.youtube.com/watch?v='+vidId+'" class="vidFrame" width="500" height="320" src="hztp://youtube.com/embed/'+vidId
+			str+='" frameborder="0" allowfullscreen></iframe>'
+			}
+	else if(str.indexOf("https://vimeo.com/")!=-1)
+		{
+		vimFlag=1
+		ytStem=str.split("https://vimeo.com/")
+		ytStem2=ytStem[1].split(" ")
+		vidId=ytStem2[0]
+		ytStem2.splice(0,1);ytStem2=ytStem2.join(" ");
+		str=ytStem[0]+ytStem2
+		
+		//temp3=str.split("vimeo.com/")
+		//temp3=temp3[1]
+		//if(temp3.indexOf(" ")!=-1){temp3=temp3.split(" ");temp3=temp3[0]}
+		//vidId=temp3
+		if(isNumber(vidId))
+			{
+			str+='<iframe id="hztp://vimeo.com/'+vidId+'" class="vidFrame" src="hztp://player.vimeo.com/video/'+vidId+'?title=0&amp;byline=0&amp;portrait=0" width="'
+			str+='500px" height="380px" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>'
+			}
+		}
+	var regex = /(https?:\/\/([-\w\.]+)+(:\d+)?(\/([\w\/_\.]*(\?\S+)?)?)?)/ig
+	//alert("8 - "+str)
+	str= str.replace(regex, "<a href='$1' target='_blank'>$1</a>");	
+	if(str.indexOf("hztp://")!=-1){str=str.split("hztp://");str=str.join("https://");}
+	return str
+	}
+function removeLinks(str){
+	//str.replace(/<\/?[A-Z]+.*?>/g, function (m) { return m.toLowerCase(); }) - should convert IE tags with any luck
+	//might be worth looking at the old FB for other pain in the arse browswers too.
+	var tree = $("<div>" + str + "</div>");
+	$(tree).find('a[href]').replaceWith(function() { return this.childNodes });
+	str=tree.html();	
+	//THIS STRIPS OUT THE VIDEO and replaces it with its raw id.
+	var stringOfHtml = str;
+	te='iframe id="';z=""
+	if(str.indexOf(te)!=-1){z=str.split(te);z=z[1];z=z.split('" ');z=z[0];}
+	else
+		{
+		te='IFRAME id=';//IE format...pain in the arse.
+		if(str.indexOf(te)!=-1){z=str.split(te);z=z[1];z=z.split(' ');z=z[0]}
+		}
+	var wrappedString = '<div>' + stringOfHtml + '</div>';
+	//alert("9 - "+wrappedString)
+	var noScript = wrappedString.replace(/iframe/g, "THISISNOTASCRIPTREALLY");
+	var noScript = noScript.replace(/IFRAME/g, "THISISNOTASCRIPTREALLY");//IE AGAIN
+	var html = $(noScript);
+	html.find('THISISNOTASCRIPTREALLY').remove();
+	str=(html.html().replace(/THISISNOTASCRIPTREALLY/g, 'script'));
+	return str+" "+z
+	}
+	
+	
+function embedYT(str,size)
+{
+if(size=='big'){ytw=180;yth=145;vimw=200;vimh=122;}
+else{ytw=150;yth=100;vimw=150;vimh=100}
+if(str.indexOf("https://www.youtube.com")!=-1)
+		{
+		temp3=str.split("https://www.youtube.com/")
+		temp4=temp3[1].split(" ")
+		vidId=getYouTubeParameter("https://www.youtube.com/"+temp4[0], 'v');
+		temp4.splice(0,1);temp4=temp4.join(" ");
+		cont=temp3[0]+temp4
+		str='<p align="center"><iframe width="'+ytw+'" height="'+yth+'" src="https://www.youtube.com/embed/'+vidId+'?HD=1;rel=0;showinfo=0;controls=0" frameborder="0" allowfullscreen></iframe></p>'
+		return str;
+		}
+else if(str.indexOf("vimeo.com/")!=-1)
+		{
+		temp3=str.split("vimeo.com/")
+		vidId=temp3[1]
+		if(isNumber(vidId))
+			{
+			str='<br><iframe src="https://player.vimeo.com/video/'+vidId+'?title=0&amp;byline=0&amp;portrait=0" width="'+vimw+'px" height="'+vimh+'px" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>'
+			return str;
+			}
+		}
+else{return str}
+}
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+function getYouTubeParameter(url, name) {
+    var urlparts = url.split('?');
+    if (urlparts.length > 1) {
+        var parameters = urlparts[1].split('&');
+        for (var i = 0; i < parameters.length; i++) {
+            var paramparts = parameters[i].split('=');
+            if (paramparts.length > 1 && unescape(paramparts[0]) == name) {
+                return unescape(paramparts[1]);
+            }
+        }
+    }
+    return null;
+}
+
+
+function printy()
+{
+$('#advert1').hide()
+$('#advert2').hide()
+$('#advert3').hide()
+$('#advert4').hide()
+$('#fixedRight').hide()
+$('#addPostWrapper').hide()
+window.print();
+$('#advert1').show()
+$('#advert2').show()
+$('#advert3').show()
+$('#advert4').show()
+$('#addPostWrapper').show()
+$('#addPostWrapper').show()
+}
+
+
+function embedIt()
+		{
+		if(templateType=="fresh"){apprise("Please SAVE your template first to get a unique URL for this Fakebook!");return}
+		apprise($("#shareDivOptions").html())
+		}
+		
+		function popup(s){
+			$('.appriseOverlay').remove();$('.appriseOuter').remove()
+			if(s=="QR")
+				{
+				apprise("<img src='https://chart.apis.google.com/chart?chs=250x250&amp;cht=qr&amp;chl=https%3A%2F%2Fwww.classtools.net%2FFB%2F&amp;choe=UTF-8' alt='QR' />");
+				}
+			if(s=="widget")
+				{
+				apprise('<b>URL</b>: https://www.classtools.net/FB/<p><b>Embed Code</b>:<br><textarea rows="10" cols="40"><iframe src="https://www.classtools.net/fbembed/'+encodeURIComponent(theTitle)+'/" style="width:150px;height:150px;position:relative;top:0;left:0;overflow:none;border:none"></iframe></textarea>');
+				}
+			}
+		
+		
+
+//USEFUL FUNCTION FOR A CONTACT FORM WITHIN A PAGE.
+function contactForm()
+{
+apprise("<iframe frameBorder='0' width='500px' height='200px' id='conForm' src='../_FAKEBOOK/contact/contactform.php' />",{'confirm' : true},
+					function (e)
+						{
+						if(e){
+							refe=self.location+"";
+							brow=get_browser()+":"+get_browser_version()
+										$.ajax({ url: "../_FAKEBOOK/contact/email.php",
+											 data: {yn: yname, ye: yemail, ym: ymess, referrer:refe, brows:brow},
+											 type: 'GET',
+											 cache: false,
+											 async:false,
+											 success: function() {apprise("Email successfully sent.");}
+											});
+								}
+						})
+}
+
+
+function get_browser(){
+    var N=navigator.appName, ua=navigator.userAgent, tem;
+    var M=ua.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i);
+    if(M && (tem= ua.match(/version\/([\.\d]+)/i))!= null) M[2]= tem[1];
+    M=M? [M[1], M[2]]: [N, navigator.appVersion, '-?'];
+    return M[0];
+    }
+function get_browser_version(){
+    var N=navigator.appName, ua=navigator.userAgent, tem;
+    var M=ua.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+(\.\d+)*)/i);
+    if(M && (tem= ua.match(/version\/([\.\d]+)/i))!= null) M[2]= tem[1];
+    M=M? [M[1], M[2]]: [N, navigator.appVersion, '-?'];
+    return M[1];
+    }
+
+</script>	
+		
+
+<div style="display:none" id="shareDivOptions">
+    <ul>
+    <li><a href="javascript:popup('widget')">URL Link / Embed Code</a></li>
+    <li><a href="javascript:popup('QR')">QR Code</a></li>
+    <li><a href="../_FAKEBOOK/download.php">Download Web Shortcut</a></li>
+    
+    </ul>
+</div>
+<div id="preloadQR" style="display:none"><img src="https://chart.apis.google.com/chart?chs=250x250&amp;cht=qr&amp;chl=https%3A%2F%2Fwww.classtools.net%2FFB&amp;choe=UTF-8" alt="QR"></div> 
+
+
+<form name="deletetest" method="post" action="../../_FAKEBOOK/delete.php">
+<input type="hidden" id="editingMode" name="editingMode" value="">
+<input type="hidden" id="folders" name="folders" value="">
+<input type="hidden" id="subfolders" name="subfolders" value="">
+</form>
+
+<div id="playGround" style="display:none"></div><!-- use this for dumping temporary html to be manipulated by Jquery -->
+
+
+
+
+
+<style>
+
+html,body
+{
+margin: 0px;
+}
+
+.small
+{
+font-size:x-small;	
+}
+
+#loginBox
+{
+position:absolute;
+z-index:10;
+top:0px;
+left:10px;	
+color:black;
+}
+
+#login a:link {color:white;text-decoration:none; font-size:small;}
+#login a:active{color:white;text-decoration:none}
+#login a:visited{color:white;text-decoration:none}
+#login
+{
+font-family:Verdana, Geneva, sans-serif;
+z-index:9999;
+font-size:small;
+position:fixed;
+top:0px;
+left:0px;
+width:100%;
+text-align:left;
+margin:0px;
+background-color:#44619d;
+text-decoration:none;
+}
+</style>
+
+<script>
+fbtemplate=0;
+premiumUser=0;
+premiumUserName="";
+premiumUserPW="";
+function showFields()
+	{
+	t=$("#login").css("top");
+	z=$("#loginBox").css("top")
+	console.log("TOP POS = "+t+" "+z);
+	if(t=="auto"){console.log(1);$("#loginBox").css("top","-75px");}
+	z=t=$("#loginBox").css("top")
+	console.log("TOP POS = "+t+" "+z);
+	document.getElementById("login").style.display="block";
+	document.getElementById("loginFields").style.display="block"
+	}
+
+function hideFields()
+{
+	document.getElementById("loginFields").style.display="none"
+}
+
+function showLoginDetails()
+{
+document.getElementById("loginBtn").style.display="none"
+document.getElementById("loggedIn").innerHTML="<a href='#'>Logged in as "+	premiumUserName +"</a> | <a href='javascript:logout()'>Logout</a> | <a target='_blank' href='//www.classtools.net'>Home</a> | <a target='_blank' href='//www.classtools.net/fform.php'>Contact</a> |  <a target='_blank' href='//www.classtools.net/_SEARCH/index.php'>PowerSearch</a> | ";
+if(typeof savethefave == 'function') 
+	{document.getElementById("loggedIn").innerHTML+="<span id='favBar'><a href='javascript:savethefave()'>Add to Favourites</a> | </span>";}
+//IMPORTANT NOTE: "savethefave" belongs in the PARENT page, so can be customised in terms of specifying title / location of widget. This function in turn calls savefave() on THIS page.
+if(typeof removAds == 'function') {removAds()}
+document.getElementById("loggedIn").innerHTML+="<a href='javascript:viewfavs()'>View Favourites</a> | ";
+document.getElementById("loggedIn").innerHTML+='<a target="_blank" href="//www.classtools.net/templates/_ac.php">Account Status</a> | '
+document.getElementById("loggedIn").style.display="block"
+
+if(fbtemplate==1)
+	{
+	$('body').css({"padding":"20px 0 0 0"});
+	$('fixeddiv').css({"top":"5px"});
+	$("#loginDiv").hide();
+	$("#login").show();
+	}
+}
+
+
+
+function logout()
+{
+$.ajax({ url: '//www.classtools.net/templates/_logout.php',
+			dataType: 'json',
+			type: 'post',
+			async:false,//wait for response before doing something
+			success: function(data) 
+				{
+				document.getElementById("loginBtn").style.display="block"
+				document.getElementById("loggedIn").style.display="none"
+				premiumUser=0;
+                }
+			});	
+	
+}
+
+
+function viewfavs()
+{self.location="//www.classtools.net/classtools_premium/user_templates.php?"+premiumUserName}
+
+function saveFave(theLoc,theTitle)
+{
+	
+	temp=self.location+""
+	$.ajax({ url: '//www.classtools.net/classtools_premium/add_template_to_user_profile.php',
+			 data: {
+					widgetLoc:theLoc,
+					premTitle:theTitle
+			 		},
+			dataType: 'json',
+			type: 'post',
+			success: function(data) 
+				{
+				alert(data.theResult)
+                }
+			});
+
+}
+
+function doLoginNow()
+{
+subUsr=document.getElementById("username").value;
+subPw=document.getElementById("thepw").value;
+doLogin(subUsr,subPw)
+}
+
+function doLogin(subUsr,subPw)//can be called from above, or from the icons.swf 
+{
+	$.ajax({ url: '//www.classtools.net/templates/_login_manual.php',
+			 data: {
+					submUsr:subUsr,
+					submPw:subPw
+			 		},
+			dataType: 'json',
+			type: 'post',
+			async:false,//wait for response before doing something
+			success: function(data) 
+				{
+				hideFields();
+				if(data.success==1)
+					{
+					premiumUser=1
+					premiumUserName=subUsr;
+					premiumUserPW=subPw;
+					showLoginDetails()
+					}
+				else
+					{
+					alert(data.theResult)
+					}
+					
+                }
+			});
+
+}
+
+</script>
+
+<script>
+if(premiumUser==1)
+	{
+	showLoginDetails();
+	hideFields();
+	}
+fbtemplate=0;
+wheel=0;
+
+if(wheel==1)
+	{
+	//$("#loginDiv").hide();
+	$('#login').css({"padding":"0px","margin":"0px","top":"auto","bottom":"0px","background-color":"black"});
+	$('#loginBox').css({"top":"auto","bottom":"40px"});
+	
+	$("#login").show();
+	}
+	
+
+    if(typeof jQuery == 'undefined'){
+        var oScriptElem = document.createElement("script");
+        oScriptElem.type = "text/javascript";
+        oScriptElem.src = "/templates/jquery.js";
+        document.head.insertBefore(oScriptElem, document.head.getElementsByTagName("script")[0])
+    }
+
+</script>
+<script src="https://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.min.css">
+<script src="https://www.classtools.net/_FAKEBOOK/share.js"></script>
+<link href="https://www.classtools.net/_FAKEBOOK/chardin.css" rel="stylesheet">
+<script src="https://www.classtools.net/_FAKEBOOK/chardin.js"></script>
+
+<script src="https://www.classtools.net/_FAKEBOOK/scripts/apprise/min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://www.classtools.net/_FAKEBOOK/scripts/apprise/style.css">
+
+
+<textarea tabindex="-1" style="position: absolute; top: -999px; left: 0px; right: auto; bottom: auto; border: 0px; box-sizing: content-box; word-wrap: break-word; overflow: hidden; transition: none; height: 0px !important; min-height: 0px !important; font-family: &quot;lucida grande&quot;, tahoma, verdana, arial, sans-serif; font-size: 13.3333px; font-weight: 400; font-style: normal; letter-spacing: 0px; text-transform: none; word-spacing: 0px; text-indent: 0px; line-height: normal; width: 316.797px;" class="autosizejs"></textarea></body></html>
